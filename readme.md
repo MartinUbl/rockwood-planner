@@ -79,8 +79,8 @@ Run database migrations:
 
 	docker compose exec web vendor/bin/phinx migrate
 
-The container Apache listens on `127.0.0.1:8080`, leaving host Apache free to keep ports 80 and 443.
-You can open the app directly at `http://127.0.0.1:8080`, or reverse proxy from host Apache.
+The container Apache listens on `127.0.0.1:8100`, leaving host Apache free to keep ports 80 and 443.
+You can open the app directly at `http://127.0.0.1:8100`, or reverse proxy from host Apache.
 
 Example host Apache setup:
 
