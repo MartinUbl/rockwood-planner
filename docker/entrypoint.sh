@@ -31,5 +31,6 @@ file_put_contents(getcwd() . "/config/local.neon", $config);
 
 mkdir -p temp/sessions log www/uploads/issues
 chown -R www-data:www-data temp log www/uploads
+chmod -R a+rwX temp log www/uploads
 
 exec "$@"

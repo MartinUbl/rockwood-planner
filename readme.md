@@ -82,6 +82,15 @@ Run database migrations:
 The container Apache listens on `127.0.0.1:8100`, leaving host Apache free to keep ports 80 and 443.
 You can open the app directly at `http://127.0.0.1:8100`, or reverse proxy from host Apache.
 
+Runtime files are bind-mounted from the project directory:
+
+	./log
+	./temp
+	./www/uploads
+
+The start and restart scripts create those directories and make them writable before launching Docker.
+Application exception logs are therefore available directly in `./log` on the host, while Apache container output is available through `docker compose logs web` or `docker-compose logs web`.
+
 Example host Apache setup:
 
 	sudo a2enmod proxy proxy_http headers

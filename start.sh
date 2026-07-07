@@ -14,4 +14,10 @@ compose() {
 	fi
 }
 
+prepare_runtime_dirs() {
+	mkdir -p log temp/sessions www/uploads/issues
+	chmod -R a+rwX log temp www/uploads
+}
+
+prepare_runtime_dirs
 compose up -d --build
