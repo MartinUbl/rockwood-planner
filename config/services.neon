@@ -1,0 +1,17 @@
+services:
+	- App\Core\RouterFactory::createRouter
+	- App\Model\UserRepository
+	- App\Model\ProjectRepository
+	- App\Model\ProjectGroupRepository
+	- App\Model\IssueRepository
+	- App\Model\IssueStateRepository
+	- App\Model\AttachmentStorage(%uploadsDir%, %uploadsUrl%)
+
+
+search:
+	-	in: %appDir%
+		classes:
+			- *Facade
+			- *Factory
+			- *Repository
+			- *Service

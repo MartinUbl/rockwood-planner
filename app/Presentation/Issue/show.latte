@@ -1,0 +1,58 @@
+{block title}{$issue->title}{/block}
+
+{block content}
+<header class="page-header">
+	<div>
+		<p class="eyebrow"><a n:href="Project:show $project->id" title="Back to project {$project->name}" aria-label="Back to project {$project->name}"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> {$project->name}</a></p>
+		<h1>{$issue->title}</h1>
+		<div n:if="$availableTransitions" class="transition-row">
+			<span>Move issue</span>
+			<div class="transition-actions">
+				<a n:foreach="$availableTransitions as $targetSlug => $targetLabel" n:class="button, state-action, $targetSlug === 'rejected' ? danger : ($targetSlug === 'completed' ? success : null)" n:href="Issue:transition $issue->id, target: $targetSlug" title="Move issue to {$targetLabel}" aria-label="Move issue to {$targetLabel}"><i n:class="$targetSlug === 'rejected' ? 'fa-solid fa-ban' : ($targetSlug === 'completed' ? 'fa-solid fa-circle-check' : 'fa-solid fa-arrow-right')" aria-hidden="true"></i> Move to {$targetLabel}</a>
+			</div>
+		</div>
+	</div>
+	<div class="header-actions">
+		<a class="button" n:href="Issue:edit $issue->id" title="Edit issue {$issue->title}" aria-label="Edit issue {$issue->title}"><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit</a>
+		<a class="button danger" n:href="Issue:delete $issue->id" title="Delete issue {$issue->title}" aria-label="Delete issue {$issue->title}" onclick="return confirm('Delete this issue?')"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete</a>
+	</div>
+</header>
+
+<section class="issue-detail">
+	<div class="panel">
+		<div class="meta-grid">
+			<div><span>State</span><strong>{$issue->ref('issue_states', 'state_id')->label}</strong></div>
+			<div><span>Severity</span><strong class="severity-text severity-{$issue->severity}">{$issue->severity}</strong></div>
+			<div><span>Creator</span><strong>{$issue->ref('users', 'creator_id')->name}</strong></div>
+			<div><span>Created</span><strong>{$issue->created_at|date:'M j, Y H:i'}</strong></div>
+			<div><span>Last modified</span><strong>{$issue->updated_at|date:'M j, Y H:i'}</strong></div>
+		</div>
+
+		<div class="body-copy">{$issue->body|breakLines}</div>
+
+		{if $attachment}
+			<div class="attachment">
+				<span>Attachment</span>
+				<a n:href="Attachment:download $attachment->id" title="Download attachment {$attachment->original_name}" aria-label="Download attachment {$attachment->original_name}"><i class="fa-solid fa-paperclip" aria-hidden="true"></i> {$attachment->original_name}</a>
+				<small>{$attachment->size} bytes</small>
+			</div>
+		{/if}
+	</div>
+
+	<div class="panel">
+		<h2>Discussion</h2>
+		{control commentForm}
+
+		<div class="comments">
+			<article n:foreach="$comments as $comment" class="comment">
+				<header>
+					<strong>{$comment->ref('users', 'user_id')->name}</strong>
+					<span>{$comment->created_at|date:'M j, Y H:i'}</span>
+				</header>
+				<p>{$comment->body|breakLines}</p>
+			</article>
+			<p n:if="!$comments" class="muted">No comments yet.</p>
+		</div>
+	</div>
+</section>
+{/block}

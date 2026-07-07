@@ -1,0 +1,91 @@
+{block title}{$project->name}{/block}
+
+{block content}
+<header class="page-header">
+	<div>
+		<p class="eyebrow">{$project->ref('project_groups', 'group_id')->name}</p>
+		<h1>{$project->name}</h1>
+		<div class="project-counters">
+			<div class="counter-group">
+				<span class="counter-group-title">Workflow</span>
+				<div class="counter-items">
+					<div class="counter counter-state">
+						<span>Open</span>
+						<strong>{$stateCounts['open']}</strong>
+					</div>
+					<div class="counter counter-state completed">
+						<span>Completed</span>
+						<strong>{$stateCounts['completed']}</strong>
+					</div>
+					<div class="counter counter-state rejected">
+						<span>Rejected</span>
+						<strong>{$stateCounts['rejected']}</strong>
+					</div>
+				</div>
+			</div>
+			<div class="counter-group severity-group">
+				<span class="counter-group-title">Active by severity</span>
+				<div class="counter-items">
+					<div n:foreach="$severityCounts as $severity => $count" class="counter severity-counter severity-{$severity}">
+						<span>{$severity}</span>
+						<strong>{$count}</strong>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="header-actions">
+		<a class="button" n:href="Project:edit $project->id" title="Edit project {$project->name}" aria-label="Edit project {$project->name}"><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit</a>
+		<a class="button danger" n:href="Project:delete $project->id" title="Delete project {$project->name}" aria-label="Delete project {$project->name}" onclick="return confirm('Delete this project and all of its issues?')"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete</a>
+		<a class="button primary" n:href="Issue:create $project->id" title="Create a new issue in {$project->name}" aria-label="Create a new issue in {$project->name}"><i class="fa-solid fa-plus" aria-hidden="true"></i> New issue</a>
+	</div>
+</header>
+
+<section class="issue-tools" aria-label="Issue list controls">
+	<div class="tool-group">
+		<span><i class="fa-solid fa-arrow-down-wide-short" aria-hidden="true"></i> Sort</span>
+		<div class="tool-actions">
+			<a n:foreach="$sortOptions as $sortKey => $sortLabel" n:class="tool-chip, $selectedSort === $sortKey ? active" n:href="Project:show $project->id, sort: $sortKey, state: $selectedState, page: 1" title="Sort issues by {$sortLabel}" aria-label="Sort issues by {$sortLabel}">
+				{if $sortKey === 'name'}<i class="fa-solid fa-arrow-down-a-z" aria-hidden="true"></i>{elseif $sortKey === 'severity'}<i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>{else}<i class="fa-regular fa-calendar" aria-hidden="true"></i>{/if}
+				{$sortLabel}
+			</a>
+		</div>
+	</div>
+	<div class="tool-group">
+		<span><i class="fa-solid fa-filter" aria-hidden="true"></i> State</span>
+		<div class="tool-actions">
+			<a n:class="tool-chip, $selectedState === null ? active" n:href="Project:show $project->id, sort: $selectedSort, state: null, page: 1" title="Show issues in every state" aria-label="Show issues in every state"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> All</a>
+			<a n:foreach="$stateOptions as $stateSlug => $stateLabel" n:class="tool-chip, $selectedState === $stateSlug ? active" n:href="Project:show $project->id, sort: $selectedSort, state: $stateSlug, page: 1" title="Show {$stateLabel} issues" aria-label="Show {$stateLabel} issues"><i class="fa-solid fa-list-check" aria-hidden="true"></i> {$stateLabel}</a>
+		</div>
+	</div>
+	<div class="result-count">
+		<i class="fa-solid fa-list" aria-hidden="true"></i>
+		{if $totalIssues === 1}1 issue{else}{$totalIssues} issues{/if}
+	</div>
+</section>
+
+{if $issues}
+	<div class="issue-list">
+		<a n:foreach="$issues as $issue" class="issue-row" n:href="Issue:show $issue->id" title="Open issue {$issue->title}" aria-label="Open issue {$issue->title}">
+			<div>
+				<strong>{$issue->title}</strong>
+				<span><i class="fa-regular fa-user" aria-hidden="true"></i> Created by {$issue->ref('users', 'creator_id')->name} on {$issue->created_at|date:'M j, Y H:i'}</span>
+			</div>
+			<div class="issue-meta">
+				<span class="pill severity-{$issue->severity}"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {$issue->severity}</span>
+				<span class="pill"><i class="fa-solid fa-list-check" aria-hidden="true"></i> {$issue->ref('issue_states', 'state_id')->label}</span>
+			</div>
+		</a>
+	</div>
+
+	<nav n:if="$lastPage > 1" class="pagination" aria-label="Issue pages">
+		<a n:class="pager-button, $page <= 1 ? disabled" n:href="Project:show $project->id, sort: $selectedSort, state: $selectedState, page: max(1, $page - 1)" title="Go to previous issue page" aria-label="Go to previous issue page"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i> Previous</a>
+		<div class="page-numbers">
+			<a n:for="$pageNumber = max(1, $page - 2); $pageNumber <= min($lastPage, $page + 2); $pageNumber++" n:class="page-number, $pageNumber === $page ? active" n:href="Project:show $project->id, sort: $selectedSort, state: $selectedState, page: $pageNumber" title="Go to issue page {$pageNumber}" aria-label="Go to issue page {$pageNumber}">{$pageNumber}</a>
+		</div>
+		<a n:class="pager-button, $page >= $lastPage ? disabled" n:href="Project:show $project->id, sort: $selectedSort, state: $selectedState, page: min($lastPage, $page + 1)" title="Go to next issue page" aria-label="Go to next issue page">Next <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>
+	</nav>
+{else}
+	<div class="empty-state">No issues match the current view.</div>
+{/if}
+{/block}

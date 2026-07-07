@@ -1,0 +1,12 @@
+.git
+.agents
+.codex
+node_modules
+vendor
+temp
+log
+docker-compose*.yml
+Dockerfile
+.dockerignore
+npm-debug.log
+yarn-error.log

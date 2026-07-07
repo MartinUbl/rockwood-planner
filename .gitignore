@@ -1,0 +1,39 @@
+# Composer dependencies
+/vendor/
+
+# Node/Vite dependencies and build cache
+/node_modules/
+/.vite/
+
+# Nette runtime files
+/temp/
+/log/
+
+# User uploads and generated public files
+/www/uploads/
+
+# Local configuration and secrets
+/config/local.neon
+/.env
+/.env.*
+!/config/local.example.neon
+!.env.example
+
+# Tooling caches
+/.phpunit.cache/
+/.php-cs-fixer.cache
+/.phpstan/
+/coverage/
+
+# Docker/local overrides
+/docker-compose.override.yml
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+/.idea/
+/.vscode/

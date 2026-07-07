@@ -1,0 +1,15 @@
+{block title}Register{/block}
+
+{block content}
+<section class="auth-shell">
+	<div class="auth-panel">
+		<p class="eyebrow">Request access</p>
+		<h1>Create account</h1>
+		<p class="muted">The first registered user is approved automatically. Every later account needs approval from an existing user.</p>
+
+		{control registerForm}
+
+		<p class="switch">Already registered? <a n:href="Sign:in" title="Sign in with an existing account" aria-label="Sign in with an existing account"><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Sign in</a></p>
+	</div>
+</section>
+{/block}

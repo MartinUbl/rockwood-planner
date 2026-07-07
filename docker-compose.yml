@@ -1,0 +1,27 @@
+services:
+  web:
+    build: .
+    container_name: rockwood-planner
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      DB_HOST: 127.0.0.1
+      DB_PORT: "3306"
+      DB_NAME: rockwood
+      DB_USER: rockwood
+      DB_PASSWORD: H4rdAsRock
+      DB_CHARSET: utf8mb4
+    volumes:
+      - rockwood_uploads:/var/www/html/www/uploads
+      - rockwood_log:/var/www/html/log
+      - rockwood_temp:/var/www/html/temp
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"exit(@fsockopen('127.0.0.1', 8080) ? 0 : 1);\""]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  rockwood_uploads:
+  rockwood_log:
+  rockwood_temp:

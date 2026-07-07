@@ -1,0 +1,35 @@
+{block title}Approvals{/block}
+
+{block content}
+<header class="page-header">
+	<div>
+		<p class="eyebrow">Access control</p>
+		<h1>Pending approvals</h1>
+	</div>
+</header>
+
+{if $pendingUsers}
+	<div class="table-card">
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Registered</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr n:foreach="$pendingUsers as $pendingUser">
+					<td>{$pendingUser->name}</td>
+					<td>{$pendingUser->email}</td>
+					<td>{$pendingUser->created_at|date:'M j, Y H:i'}</td>
+					<td class="actions"><a class="button tiny" n:href="approve $pendingUser->id" title="Approve {$pendingUser->email}" aria-label="Approve {$pendingUser->email}"><i class="fa-solid fa-check" aria-hidden="true"></i> Approve</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+{else}
+	<div class="empty-state">No accounts are waiting for approval.</div>
+{/if}
+{/block}

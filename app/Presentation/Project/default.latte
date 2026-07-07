@@ -1,0 +1,37 @@
+{block title}Projects{/block}
+
+{block content}
+<header class="page-header">
+	<div>
+		<p class="eyebrow">Workspace</p>
+		<h1>Projects</h1>
+	</div>
+	<a class="button primary" n:href="Project:create" title="Create a new project" aria-label="Create a new project"><i class="fa-solid fa-plus" aria-hidden="true"></i> New project</a>
+</header>
+
+{if $totalProjects}
+	<div class="grouped-projects">
+		<section n:foreach="$groupedProjects as $projectGroup" n:if="$projectGroup['projects']" class="project-group">
+			<header class="group-header">
+				<div>
+					<p class="eyebrow">Project group</p>
+					<h2><i class="fa-solid fa-folder-open" aria-hidden="true"></i> {$projectGroup['group']->name}</h2>
+				</div>
+				<span>
+					{count($projectGroup['projects'])} {count($projectGroup['projects']) === 1 ? 'project' : 'projects'}
+					{if $projectGroup['lastIssueModifiedAt']} - latest issue {$projectGroup['lastIssueModifiedAt']|date:'M j, Y H:i'}{/if}
+				</span>
+			</header>
+			<div class="project-grid">
+				<a n:foreach="$projectGroup['projects'] as $projectItem" class="project-card" n:href="Project:show $projectItem['project']->id" title="Open project {$projectItem['project']->name}" aria-label="Open project {$projectItem['project']->name}">
+					<strong>{$projectItem['project']->name}</strong>
+					<span n:if="$projectItem['lastIssueModifiedAt']"><i class="fa-regular fa-clock" aria-hidden="true"></i> Latest issue {$projectItem['lastIssueModifiedAt']|date:'M j, Y H:i'}</span>
+					<span n:if="!$projectItem['lastIssueModifiedAt']"><i class="fa-regular fa-calendar" aria-hidden="true"></i> Created {$projectItem['project']->created_at|date:'M j, Y'}</span>
+				</a>
+			</div>
+		</section>
+	</div>
+{else}
+	<div class="empty-state">No projects yet. Create the first one to start tracking issues.</div>
+{/if}
+{/block}

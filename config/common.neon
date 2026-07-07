@@ -1,0 +1,32 @@
+# see https://doc.nette.org/en/configuring
+
+parameters:
+	appName: Rockwood Planner
+	uploadsDir: %wwwDir%/uploads/issues
+	uploadsUrl: /uploads/issues
+
+
+application:
+	errorPresenter:
+		4xx: Error:Error4xx
+		5xx: Error:Error5xx
+	mapping: App\Presentation\*\**Presenter
+
+
+latte:
+	strictParsing: yes
+	extensions:
+		- App\Presentation\Accessory\LatteExtension
+
+
+assets:
+	mapping:
+		default:
+			path: assets
+			# type: vite  # Uncomment to activate Vite for asset building
+
+
+di:
+	export:
+		parameters: no
+		tags: no

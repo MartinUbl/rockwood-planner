@@ -1,0 +1,17 @@
+{block title}Edit issue{/block}
+
+{block content}
+<header class="page-header compact">
+	<div>
+		<p class="eyebrow">{$project->name}</p>
+		<h1>Edit issue</h1>
+	</div>
+</header>
+
+<section class="panel">
+	{if $attachment}
+		<p class="muted">Current attachment: <a n:href="Attachment:download $attachment->id" title="Download current attachment {$attachment->original_name}" aria-label="Download current attachment {$attachment->original_name}"><i class="fa-solid fa-paperclip" aria-hidden="true"></i> {$attachment->original_name}</a></p>
+	{/if}
+	{control issueForm}
+</section>
+{/block}
