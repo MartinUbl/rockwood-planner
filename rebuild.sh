@@ -23,7 +23,8 @@ run_migrations() {
 	compose exec -T web vendor/bin/phinx migrate
 }
 
-compose down
+compose down --remove-orphans
 prepare_runtime_dirs
-compose up -d --build
+compose build --pull --no-cache web
+compose up -d --force-recreate web
 run_migrations

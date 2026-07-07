@@ -72,10 +72,12 @@ Or use the helper scripts:
 	./start.sh
 	./stop.sh
 	./restart.sh
+	./rebuild.sh
 
 The helper scripts use `docker compose` when the Compose v2 plugin is installed and fall back to `docker-compose` for older Debian setups.
 
-Run database migrations:
+`start.sh`, `restart.sh`, and `rebuild.sh` run database migrations automatically after the web container starts.
+To run migrations manually:
 
 	docker compose exec web vendor/bin/phinx migrate
 

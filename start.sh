@@ -19,5 +19,10 @@ prepare_runtime_dirs() {
 	chmod -R a+rwX log temp www/uploads
 }
 
+run_migrations() {
+	compose exec -T web vendor/bin/phinx migrate
+}
+
 prepare_runtime_dirs
 compose up -d --build
+run_migrations
