@@ -73,6 +73,8 @@ Or use the helper scripts:
 	./stop.sh
 	./restart.sh
 
+The helper scripts use `docker compose` when the Compose v2 plugin is installed and fall back to `docker-compose` for older Debian setups.
+
 Run database migrations:
 
 	docker compose exec web vendor/bin/phinx migrate
