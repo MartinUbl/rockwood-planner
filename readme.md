@@ -1,6 +1,8 @@
 Nette Web Project
 =================
 
+*DISCLAIMER*: _THIS PROJECT IS PURELY VIBECODED! I just wanted to try vibecoding something noncritical with Codex; After this, I will abandon vibecoding (at least for some nontrivial amount of time) and stick with the copilot mode, which I'm able to guide (and validate!) better_
+
 Welcome to the Nette Web Project! This is a basic skeleton application built using
 [Nette](https://nette.org), ideal for kick-starting your new web projects.
 
